@@ -1,6 +1,10 @@
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     `maven-publish`
     id("kotlin")
+    signing
 }
 
 kotlin {
@@ -13,6 +17,9 @@ tasks {
         from(sourceSets.main.get().allSource)
     }
 }
+
+val mavenCredentials = Properties()
+mavenCredentials.load(FileInputStream(rootProject.file("credentials.properties")))
 
 publishing {
     publications {
@@ -48,4 +55,20 @@ publishing {
             }
         }
     }
+
+    repositories {
+        maven {
+            url = uri("https://mvn.fredboy.ru/releases")
+            name = "fredboyRepository"
+
+            credentials {
+                username = mavenCredentials["mavenUsername"] as String
+                password = mavenCredentials["mavenPassword"] as String
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["maven"])
 }
