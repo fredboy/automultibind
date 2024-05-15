@@ -1,4 +1,5 @@
 import java.io.FileInputStream
+import java.io.IOException
 import java.util.*
 
 plugins {
@@ -20,7 +21,9 @@ tasks {
 }
 
 val mavenCredentials = Properties()
-mavenCredentials.load(FileInputStream(rootProject.file("credentials.properties")))
+try {
+    mavenCredentials.load(FileInputStream(rootProject.file("credentials.properties")))
+} catch (_: IOException) {}
 
 
 publishing {
@@ -64,8 +67,8 @@ publishing {
             name = "fredboyRepository"
 
             credentials {
-                username = mavenCredentials["mavenUsername"] as String
-                password = mavenCredentials["mavenPassword"] as String
+                username = mavenCredentials["mavenUsername"] as? String
+                password = mavenCredentials["mavenPassword"] as? String
             }
         }
     }
