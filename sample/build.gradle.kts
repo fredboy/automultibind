@@ -16,8 +16,8 @@ repositories {
 }
 
 dependencies {
-    implementation("ru.fredboy:automultibind-annotations:1.0.0")
-    ksp("ru.fredboy:automultibind-ksp:1.0.0")
+    implementation("ru.fredboy:automultibind-annotations:1.0.2")
+    ksp("ru.fredboy:automultibind-ksp:1.0.2")
 }
 
 dependencies {

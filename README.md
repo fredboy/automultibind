@@ -8,8 +8,8 @@ My simple KSP processor that generates dagger modules with multibindings
 * Add `mavenLocal()` to repositories in build.gradle
 * Add dependencies
 ```
-    implementation "ru.fredboy:automultibind-annotations:1.0.1"
-    ksp "ru.fredboy:automultibind-ksp:1.0.1"
+    implementation "ru.fredboy:automultibind-annotations:1.0.2"
+    ksp "ru.fredboy:automultibind-ksp:1.0.2"
 ```
 
 Or you could use my maven repo, if it is up
@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-    implementation("ru.fredboy:automultibind-annotations:1.0.1")
-    ksp("ru.fredboy:automultibind-ksp:1.0.1")
+    implementation("ru.fredboy:automultibind-annotations:1.0.2")
+    ksp("ru.fredboy:automultibind-ksp:1.0.2")
 }
 ```
 

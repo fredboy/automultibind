@@ -6,6 +6,7 @@ plugins {
     `maven-publish`
     id("kotlin")
     id("com.google.devtools.ksp") version Versions.KSP
+    id("org.jetbrains.dokka") version Versions.DOKKA
     signing
 }
 
@@ -17,6 +18,12 @@ tasks {
     val sourcesJar by creating(Jar::class) {
         archiveClassifier.set("sources")
         from(sourceSets.main.get().allSource)
+    }
+
+    val javadocJar by creating(Jar::class) {
+        dependsOn(dokkaHtml)
+        archiveClassifier.set("javadoc")
+        from(dokkaHtml.flatMap { it.outputDirectory })
     }
 }
 
@@ -34,8 +41,13 @@ publishing {
             version = project.version as String
 
             from(components["java"])
+
             artifact(tasks["sourcesJar"]) {
                 classifier = "sources"
+            }
+
+            artifact(tasks["javadocJar"]) {
+                classifier = "javadoc"
             }
 
             pom {
@@ -57,6 +69,12 @@ publishing {
                         email = "fredboy@protonmail.com"
                     }
                 }
+
+                scm {
+                    connection = "scm:git:https://github.com/fredboy/automultibind.git"
+                    developerConnection = "scm:git:ssh://github.com/fredboy/automultibind.git"
+                    url = "https://github.com/fredboy/automultibind"
+                }
             }
         }
     }
@@ -69,6 +87,15 @@ publishing {
             credentials {
                 username = mavenCredentials["mavenUsername"] as? String
                 password = mavenCredentials["mavenPassword"] as? String
+            }
+        }
+
+        maven {
+            name = "OSSRH"
+            url = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
+            credentials {
+                username = mavenCredentials["ossrhUsername"] as? String
+                password = mavenCredentials["ossrhPassword"] as? String
             }
         }
     }
