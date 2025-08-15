@@ -3,8 +3,10 @@ package ru.fredboy.automultibind.processor
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toClassName
+import com.squareup.kotlinpoet.ksp.toTypeName
 import ru.fredboy.automultibind.annotations.BindsIntoSet
 import kotlin.reflect.KClass
 
@@ -18,7 +20,7 @@ internal class BindsIntoSetSymbolProcessor(
 
     override fun generateModule(
         annotationName: String,
-        interfaceName: ClassName,
+        interfaceType: KSType,
         moduleName: ClassName,
         classes: List<KSClassDeclaration>
     ): FileSpec? {
@@ -33,7 +35,7 @@ internal class BindsIntoSetSymbolProcessor(
                 .addAnnotation(ClassName("dagger", "Binds"))
                 .addAnnotation(ClassName("dagger.multibindings", "IntoSet"))
                 .addParameter(ParameterSpec("impl", clazz))
-                .returns(interfaceName)
+                .returns(interfaceType.toTypeName())
                 .addModifiers(KModifier.ABSTRACT)
                 .build()
         }

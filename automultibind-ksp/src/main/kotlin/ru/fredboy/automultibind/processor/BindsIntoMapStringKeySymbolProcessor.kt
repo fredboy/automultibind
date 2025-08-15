@@ -3,8 +3,10 @@ package ru.fredboy.automultibind.processor
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toClassName
+import com.squareup.kotlinpoet.ksp.toTypeName
 import ru.fredboy.automultibind.annotations.BindsIntoMapStringKey
 import kotlin.reflect.KClass
 
@@ -18,7 +20,7 @@ internal class BindsIntoMapStringKeySymbolProcessor(
 
     override fun generateModule(
         annotationName: String,
-        interfaceName: ClassName,
+        interfaceType: KSType,
         moduleName: ClassName,
         classes: List<KSClassDeclaration>
     ): FileSpec? {
@@ -47,7 +49,7 @@ internal class BindsIntoMapStringKeySymbolProcessor(
                         .build()
                 )
                 .addParameter(ParameterSpec("impl", clazz))
-                .returns(interfaceName)
+                .returns(interfaceType.toTypeName())
                 .addModifiers(KModifier.ABSTRACT)
                 .build()
         }

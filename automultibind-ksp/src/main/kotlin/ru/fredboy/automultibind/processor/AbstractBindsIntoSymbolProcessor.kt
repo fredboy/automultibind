@@ -19,7 +19,7 @@ internal abstract class AbstractBindsIntoSymbolProcessor(
 
     protected abstract fun generateModule(
         annotationName: String,
-        interfaceName: ClassName,
+        interfaceType: KSType,
         moduleName: ClassName,
         classes: List<KSClassDeclaration>
     ): FileSpec?
@@ -32,7 +32,7 @@ internal abstract class AbstractBindsIntoSymbolProcessor(
             throw IllegalArgumentException()
         }
 
-        val interfaceName = args.first { it.name?.getShortName() == "interfaceClass" }.value as KSType
+        val interfaceType = args.first { it.name?.getShortName() == "interfaceClass" }.value as KSType
         val modulePackage = args.first { it.name?.getShortName() == "modulePackage" }.value as String
         val moduleName = args.first { it.name?.getShortName() == "moduleName" }.value as String
 
@@ -45,7 +45,7 @@ internal abstract class AbstractBindsIntoSymbolProcessor(
 
         generateModule(
             annotationName = annotation.qualifiedName!!.getShortName(),
-            interfaceName = interfaceName.toClassName(),
+            interfaceType = interfaceType,
             moduleName = moduleClassName,
             classes = elements
         )?.writeTo(codeGenerator, Dependencies(true))
